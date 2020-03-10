@@ -1,0 +1,53 @@
+<html style = "height: 100%;">
+<head>
+	<title> Westeros Map: Example </title>
+	<meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="scripts/leaflet/leaflet.css">
+	<script type="text/javascript" src = "scripts/leaflet/leaflet.js"></script>
+</head>
+<body style = "height: 100%;">
+	<div id = "map" style = "width: 100%; height: 100%; background: #888888;"></div>
+	<script src="https://gmousse.github.io/dataframe-js/dist/dataframe.min.js" type = "module">
+				import DataFrame, { Row } from 'dataframe-js';
+				const df = new DataFrame({
+    longitude: [15], // <------ A column
+    latitude: [70],
+}, ['longitude', 'latitude']);
+
+	</script>
+
+
+	<script type="text/javascript">
+		// Imports
+		//var DataFrame = dfjs.DataFrame;
+
+		// Variables
+		var mapSW = [0, 2048],
+			mapNE = [2048, 0];
+
+		// Declare Map Object
+		var map = L.map('map').setView([0, 0], 1);
+
+		// Reference the tiles
+		L.tileLayer('map/{z}/{x}/{y}.png', {
+			minZoom: 0,
+			maxZoom: 4,
+			continuousWorld: false,
+			noWrap: true,
+			crs: L.CRS.Simple
+		}).addTo(map);
+
+		map.setMaxBounds(new L.LatLngBounds(
+			map.unproject(mapSW, map.getMaxZoom()),
+			map.unproject(mapNE, map.getMaxZoom())
+			));
+
+
+		// Markers and Popups
+		var longitude = df.toArray('longitude')
+		var marker = L.marker([0, 0]).addTo(map)
+		marker.bindPopup('<b> Rabbit </b>');
+
+	</script>
+</body>
+</html>
